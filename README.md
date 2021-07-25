@@ -17,5 +17,3 @@
 
 /videos/comments -> Comment on a video
 /videos/comments/delete -> Delete A Comment of a Video
-
-커밋 연습
