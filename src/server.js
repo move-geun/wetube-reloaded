@@ -1,5 +1,3 @@
-import "./db";
-import "./models/Video";
 import express from "express";
 import morgan from "morgan";
 import globalRouter from "./router/globalRouter";
@@ -17,8 +15,4 @@ app.use("/", globalRouter);
 app.use("/users", userRouter);
 app.use("/videos", videoRouter);
 
-const handleListening = () => {
-  console.log("✅ Hellow my site");
-};
-
-app.listen(4000, handleListening);
+export default app;
