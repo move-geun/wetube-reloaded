@@ -1,5 +1,6 @@
 import "./db";
 import "./models/Video";
+import "./models/User";
 import app from "../src/server";
 
 const handleListening = () => {
