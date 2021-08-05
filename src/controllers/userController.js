@@ -23,7 +23,7 @@ export const postJoin = async (req, res) => {
     });
     return res.redirect("/login");
   } catch (error) {
-    return res.status(400).render("upload", {
+    return res.status(400).render("join", {
       pageTitle: "Join",
       errorMessage: error._message,
     });
@@ -50,6 +50,8 @@ export const postLogin = async (req, res) => {
       errormessage: "틀린 Password입니다.",
     });
   }
+  req.session.loggedIn = true;
+  req.session.user = user;
   res.redirect("/");
 };
 export const logout = (req, res) => res.send("Log Out");
