@@ -1,7 +1,8 @@
+import "dotenv/config";
 import "./db";
 import "./models/Video";
 import "./models/User";
-import app from "../src/server";
+import app from "./server";
 
 const handleListening = () => {
   console.log("✅ Hellow my site");
