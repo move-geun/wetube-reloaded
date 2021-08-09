@@ -145,14 +145,7 @@ export const postEdit = async (req, res) => {
     },
     body: { name, username, email, location },
   } = req;
-  const findEmail = await User.findOne({ email });
-  const findName = await User.findOne({ name });
-  if (name === findName.name || email === findEmail.email) {
-    return res.render("editProfile", {
-      pageTitle: "Edit profile",
-      errormessage: "이미 존재하는 Name 또는 Email입니다.",
-    });
-  }
+
   const updateUser = await User.findByIdAndUpdate(
     _id,
     {
