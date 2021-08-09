@@ -12,8 +12,12 @@ html(lang="ko")
                     li
                         a(href="/") Home
                     if loggedIn
+                        li 
+                            a(href="/videos/upload") Upload Video
                         li                     
                             a(href="/users/logout") Log Out     
+                        li 
+                            a(href="/users/editProfile") Edit Profile
                         li 
                             a(href="/my-profile") #{loggedInUser.name}의 Profile 
                     else  
@@ -21,8 +25,7 @@ html(lang="ko")
                             a(href="/join") Join 
                         li 
                             a(href="/login") Login          
-                    li 
-                         a(href="/videos/upload") Upload Video
+
                     li 
                          a(href="/search") Search
 

@@ -1,6 +1,7 @@
 import User from "../models/User";
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
+import { render } from "pug";
 
 export const getJoin = (req, res) => res.render("join", { pageTitle: "Join" });
 export const postJoin = async (req, res) => {
@@ -31,8 +32,6 @@ export const postJoin = async (req, res) => {
   }
 };
 
-export const edit = (req, res) => res.send("User Edit");
-export const remove = (req, res) => res.send("Delete User");
 export const getLogin = (req, res) =>
   res.render("login", { pageTitle: "Log In" });
 export const postLogin = async (req, res) => {
@@ -132,4 +131,41 @@ export const logout = (req, res) => {
   req.session.destroy();
   return res.redirect("/");
 };
+
+export const getEdit = (req, res) => {
+  return res.render("editProfile", { pageTitle: "Edit profile" });
+};
+
+export const postEdit = async (req, res) => {
+  /*const {_id} = req.session.user;
+  const {name, username, email, location} = req.body;*/
+  const {
+    session: {
+      user: { _id },
+    },
+    body: { name, username, email, location },
+  } = req;
+  const findEmail = await User.findOne({ email });
+  const findName = await User.findOne({ name });
+  if (name === findName.name || email === findEmail.email) {
+    return res.render("editProfile", {
+      pageTitle: "Edit profile",
+      errormessage: "이미 존재하는 Name 또는 Email입니다.",
+    });
+  }
+  const updateUser = await User.findByIdAndUpdate(
+    _id,
+    {
+      name,
+      username,
+      email,
+      location,
+    },
+    { new: true }
+  );
+  req.session.user = updateUser;
+  return res.redirect("/users/editProfile");
+};
+
 export const see = (req, res) => res.send("Watch video");
+export const remove = (req, res) => res.send("Delete User");
