@@ -9,3 +9,6 @@ block content
         input(name="username", placeholder="Username", required, type="text", value=loggedInUser.username )
         input(name="location", placeholder="Location", type="text", value=loggedInUser.location )
         input(value="Upload" type="submit")
+     if(loggedInUser.socialOnly === true)
+         hr
+         a(href="changePassword") Change Password &rarr;
