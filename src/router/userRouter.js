@@ -10,7 +10,7 @@ import {
   getChangePassword,
   postChangePassword,
 } from "../controllers/userController";
-import { loginOnly, guestOnly, uploadFiles } from "../middlewares";
+import { loginOnly, guestOnly, avatarFiles } from "../middlewares";
 
 const userRouter = express.Router();
 
@@ -19,7 +19,7 @@ userRouter
   .route("/editProfile")
   .all(loginOnly)
   .get(getEdit)
-  .post(uploadFiles.single("avatar"), postEdit);
+  .post(avatarFiles.single("avatar"), postEdit);
 userRouter.get("/remove", remove);
 userRouter.get("/github/start", guestOnly, startGithubLogin);
 userRouter.get("/github/finish", guestOnly, finishGithubLogin);

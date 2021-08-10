@@ -7,7 +7,7 @@ import {
   getUpload,
   postUpload,
 } from "../controllers/videoController";
-import { loginOnly } from "../middlewares";
+import { loginOnly, videoFiles } from "../middlewares";
 
 const videoRouter = express.Router();
 
@@ -18,6 +18,10 @@ videoRouter
   .get(getEdit)
   .post(postEdit);
 videoRouter.route("/:id([0-9a-f]{24})/delete").all(loginOnly).get(deleteVideo);
-videoRouter.route("/upload").all(loginOnly).get(getUpload).post(postUpload);
+videoRouter
+  .route("/upload")
+  .all(loginOnly)
+  .get(getUpload)
+  .post(videoFiles.single("video"), postUpload);
 
 export default videoRouter;

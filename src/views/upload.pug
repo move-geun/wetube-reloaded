@@ -6,7 +6,9 @@ block content
         if errorMessage
             span errorMessage
         
-        form(method="POST")
+        form(method="POST", enctype="multipart/form-data")
+            label(for="video") Video 
+            input(type="file", id="video", name="video", accept="video/*")
             input(placeholder="Title", required, type="text", name="title", minlenth=1)
             input(placeholder="Description", required, type="text", name="description", minlenth=1)
             input(placeholder="Hashtags, Separate by comma", required, type="text", name="hashtags")
