@@ -134,6 +134,8 @@ export const logout = (req, res) => {
 export const getEdit = (req, res) => {
   return res.render("editProfile", { pageTitle: "Edit profile" });
 };
+
+/* 제발 되기를
 export const postEdit = async (req, res) => {
   const {
     session: {
@@ -156,6 +158,88 @@ export const postEdit = async (req, res) => {
   req.session.user = updatedUser;
   return res.redirect("/users/editProfile");
 };
+*/
+
+export const postEdit = async (req, res) => {
+  /*
+  주석 처리 하세요 여기부터//////////////////////////////////
+  const {_id} = req.session.user;
+  const {name, username, email, location} = req.body;
+  여기까지//////////////////////////////////////////////
+ */
+  const {
+    session: {
+      user: { _id, avatarUrl },
+    },
+    body: { name, username, email, location },
+    file,
+  } = req;
+
+  const findEmail = await User.findOne({ email });
+  const findName = await User.findOne({ name });
+  /*
+  여기부터도 //////////////////////////////////////////////
+  if(findName != null && findName._id != _id){
+    return res.render("editProfile", {
+      pageTitle: "Edit profile",
+      errormessage: `동일한 ${name}이 이미 존재합니다.`,
+    });
+  } else if(findEmail != null && findEmail._id != _id){
+    return res.render("editProfile", {
+      pageTitle: "Edit profile",
+      errormessage: `동일한 ${email}이 이미 존재합니다.`,
+    });
+  };
+   여기까지는 /////////////////////////////////////////////////
+   */
+  if (findName !== null && findName._id != _id) {
+    console.log(
+      "1번에서 말합니다 findName = ",
+      findName._id,
+      "findEmail = ",
+      findEmail,
+      "name = ",
+      name
+    );
+    return res.render("editProfile", {
+      pageTitle: "Edit Profile",
+      errormessage: `이미 존재하는 ${name}입니다. `,
+    });
+  }
+  if (findEmail !== null && findEmail._id != _id) {
+    console.log(
+      "2번에서 말합니다 findName = ",
+      findName,
+      "findEmail = ",
+      findEmail
+    );
+    return res.render("editProfile", {
+      pageTitle: "Edit Profile",
+      errormessage: `이미 존재하는 ${email}입니다.`,
+    });
+  }
+  const updateUser = await User.findByIdAndUpdate(
+    _id,
+    {
+      avatarUrl: file ? file.path : avatarUrl,
+      name,
+      username,
+      email,
+      location,
+    },
+    { new: true }
+  );
+  req.session.user = updateUser;
+  console.log("findName = ", findName, "findEmail = ", findEmail);
+  return res.redirect("/users/editProfile");
+};
+
+/*
+ 일단 문제 해결 할 것 
+ 1. name과 email 중복값 확인해서 멈추게 하는 것
+ 2. 기존에 avatarUrl이 없을 경우, 적용이 잘 되지만, 있을 경우 사진이 뜨지 않음("/" 추가 하는거 때문인데, 이거 수정할 것)
+
+*/
 
 export const getChangePassword = (req, res) => {
   if (req.session.user.socialOnly === true) {
