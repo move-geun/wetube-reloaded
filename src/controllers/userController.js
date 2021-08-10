@@ -147,24 +147,30 @@ export const postEdit = async (req, res) => {
   } = req;
   const findEmail = await User.findOne({ email });
   const findName = await User.findOne({ name });
-  if (findName || findEmail) {
+  if (findName === null || findEmail === null) {
+    const updateUser = await User.findByIdAndUpdate(
+      _id,
+      {
+        name,
+        username,
+        email,
+        location,
+      },
+      { new: true }
+    );
+    req.session.user = updateUser;
+    return res.redirect("/users/editProfile");
+  } else if (findName._id != _id) {
     return res.render("editProfile", {
       pageTitle: "Edit profile",
-      errormessage: "이미 존재하는 Name 또는 Email입니다.",
+      errormessage: `동일한 ${name}이 이미 존재합니다.`,
+    });
+  } else if (findEmail._id != _id) {
+    return res.render("editProfile", {
+      pageTitle: "Edit profile",
+      errormessage: `동일한 ${email}이 이미 존재합니다.`,
     });
   }
-  const updateUser = await User.findByIdAndUpdate(
-    _id,
-    {
-      name,
-      username,
-      email,
-      location,
-    },
-    { new: true }
-  );
-  req.session.user = updateUser;
-  return res.redirect("/users/editProfile");
 };
 
 export const see = (req, res) => res.send("Watch video");
