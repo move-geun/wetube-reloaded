@@ -7,16 +7,27 @@ import {
   see,
   startGithubLogin,
   finishGithubLogin,
+  getChangePassword,
+  postChangePassword,
 } from "../controllers/userController";
-import { loginOnly, guestOnly } from "../middlewares";
+import { loginOnly, guestOnly, uploadFiles } from "../middlewares";
 
 const userRouter = express.Router();
 
 userRouter.get("/logout", loginOnly, logout);
-userRouter.route("/editProfile").all(loginOnly).get(getEdit).post(postEdit);
+userRouter
+  .route("/editProfile")
+  .all(loginOnly)
+  .get(getEdit)
+  .post(uploadFiles.single("avatar"), postEdit);
 userRouter.get("/remove", remove);
 userRouter.get("/github/start", guestOnly, startGithubLogin);
 userRouter.get("/github/finish", guestOnly, finishGithubLogin);
+userRouter
+  .route("/changePassword")
+  .all(loginOnly)
+  .get(getChangePassword)
+  .post(postChangePassword);
 userRouter.get("/:id", see);
 
 export default userRouter;

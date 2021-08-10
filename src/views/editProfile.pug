@@ -1,14 +1,18 @@
 extends base.pug
 
 block content   
+
      if(errormessage)
         span=errormessage
-     form(method="POST")
+     img(src="/" + loggedInUser.avatarUrl, width="100", height="100")
+     form(method="POST", enctype="multipart/form-data")
+        label(for="avatar") Avatar
+        input(type="file", id="avatar", name="avatar", accept="image/*")
         input(name="name", placeholder="Name", required, type="text", value=loggedInUser.name )
         input(name="email", placeholder="Email", required, type="email", value=loggedInUser.email )
         input(name="username", placeholder="Username", required, type="text", value=loggedInUser.username )
         input(name="location", placeholder="Location", type="text", value=loggedInUser.location )
         input(value="Upload" type="submit")
-     if(loggedInUser.socialOnly === true)
+     if !loggedInUser.socialOnly
          hr
          a(href="changePassword") Change Password &rarr;

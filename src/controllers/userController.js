@@ -1,7 +1,6 @@
 import User from "../models/User";
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
-import { render } from "pug";
 
 export const getJoin = (req, res) => res.render("join", { pageTitle: "Join" });
 export const postJoin = async (req, res) => {
@@ -135,43 +134,60 @@ export const logout = (req, res) => {
 export const getEdit = (req, res) => {
   return res.render("editProfile", { pageTitle: "Edit profile" });
 };
-
 export const postEdit = async (req, res) => {
-  /*const {_id} = req.session.user;
-  const {name, username, email, location} = req.body;*/
+  const {
+    session: {
+      user: { _id, avatarUrl },
+    },
+    body: { name, email, username, location },
+    file,
+  } = req;
+  const updatedUser = await User.findByIdAndUpdate(
+    _id,
+    {
+      avatarUrl: file ? file.path : avatarUrl,
+      name,
+      email,
+      username,
+      location,
+    },
+    { new: true }
+  );
+  req.session.user = updatedUser;
+  return res.redirect("/users/editProfile");
+};
+
+export const getChangePassword = (req, res) => {
+  if (req.session.user.socialOnly === true) {
+    return res.redirect("/");
+  }
+  return res.render("changePassword", { pageTitle: "Change Password" });
+};
+
+export const postChangePassword = async (req, res) => {
   const {
     session: {
       user: { _id },
     },
-    body: { name, username, email, location },
+    body: { oldPassword, newPassword, newPassword2 },
   } = req;
-  const findEmail = await User.findOne({ email });
-  const findName = await User.findOne({ name });
-  if (findName === null || findEmail === null) {
-    const updateUser = await User.findByIdAndUpdate(
-      _id,
-      {
-        name,
-        username,
-        email,
-        location,
-      },
-      { new: true }
-    );
-    req.session.user = updateUser;
-    return res.redirect("/users/editProfile");
-  } else if (findName._id != _id) {
-    return res.render("editProfile", {
-      pageTitle: "Edit profile",
-      errormessage: `동일한 ${name}이 이미 존재합니다.`,
-    });
-  } else if (findEmail._id != _id) {
-    return res.render("editProfile", {
-      pageTitle: "Edit profile",
-      errormessage: `동일한 ${email}이 이미 존재합니다.`,
+  const user = await User.findById(_id);
+  const ok = await bcrypt.compare(oldPassword, user.password);
+  if (!ok) {
+    return res.status(400).render("changePassword", {
+      pageTitle: "Change Password",
+      errormessage: "기존 비밀번호가 맞지 않습니다.",
     });
   }
+  if (newPassword !== newPassword2) {
+    return res.status(400).render("changePassword", {
+      pageTitle: "Change Password",
+      errormessage: "새로운 비밀번호가 맞지 않습니다. 다시 확인해주세요.",
+    });
+  }
+  user.password = newPassword;
+  await user.save();
+  return res.redirect("logout");
 };
-
 export const see = (req, res) => res.send("Watch video");
 export const remove = (req, res) => res.send("Delete User");
