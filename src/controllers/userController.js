@@ -111,7 +111,7 @@ export const finishGithubLogin = async (req, res) => {
     if (!user) {
       user = await User.create({
         avatarUrl: userData.avatar_url,
-        name: userData.name,
+        name: userData.name ? userData.name : "Guest",
         username: userData.login,
         email: emailObj.email,
         password: "",
@@ -145,7 +145,14 @@ export const postEdit = async (req, res) => {
     },
     body: { name, username, email, location },
   } = req;
-
+  const findEmail = await User.findOne({ email });
+  const findName = await User.findOne({ name });
+  if (findName || findEmail) {
+    return res.render("editProfile", {
+      pageTitle: "Edit profile",
+      errormessage: "이미 존재하는 Name 또는 Email입니다.",
+    });
+  }
   const updateUser = await User.findByIdAndUpdate(
     _id,
     {
