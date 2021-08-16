@@ -1,8 +1,8 @@
 mixin video(info)
-    a(href=`/videos/${video.id}`).video-mixin
+    a(href=`/videos/${info.id}`).video-mixin
         div.video-mixin__thumb
         div.video-mixin__data
-            span.video-mixin__title=video.title
+            span.video-mixin__title=info.title
             div.video-mixin__meta
-                span #{video.owner.name} • 
-                span #{video.meta.views} 회 
+                span #{info.owner.name} • 
+                span #{info.meta.views} 회 
