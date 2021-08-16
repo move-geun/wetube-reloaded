@@ -14,3 +14,5 @@ const handelError = (error) => console.log("❌ DB Error", error);
 
 db.on("error", handelError);
 db.once("open", handleOpen);
+
+// 커밋 확인용//
