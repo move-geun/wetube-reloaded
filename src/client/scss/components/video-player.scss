@@ -1,0 +1,30 @@
+.videoContainer {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+  position: absolute;
+}
+
+.videoControlBox {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  justify-content: center;
+}
+
+.time {
+  width: 100%;
+}
+
+.videoControlBoxSec {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.subBoxFir {
+  display: flex;
+  justify-content: center;
+}
