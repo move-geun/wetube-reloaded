@@ -3,7 +3,7 @@ extends base.pug
 block content   
     div#fullScreen.videoContainer
         video(src="/" + video.videoUrl).video
-        div.videoControlBox
+        div.videoControlBox#videoShowing
             div.videoControlBoxFir
                 input#time.time(type="range", min="0", step="1", value="0")    
             div.videoControlBoxSec  

@@ -1,9 +1,13 @@
+button {
+  all: unset;
+  margin: 10px;
+}
 .videoContainer {
   display: flex;
   flex-direction: column;
   text-align: center;
   justify-content: center;
-  position: absolute;
+  position: relative;
 }
 
 .videoControlBox {
@@ -12,6 +16,13 @@
   flex-direction: column;
   text-align: center;
   justify-content: center;
+  position: absolute;
+  bottom: 0;
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+.showing {
+  opacity: 1;
 }
 
 .time {
@@ -27,4 +38,8 @@
 .subBoxFir {
   display: flex;
   justify-content: center;
+}
+
+.volume {
+  margin-right: 10px;
 }
