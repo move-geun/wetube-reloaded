@@ -101,6 +101,11 @@ const handleMouseLeave = () => {
   controlsTimeout = setTimeout(hideControls, 3000);
 };
 
+const handleKeydown = (event) => {
+  if (event.code === "Enter") handleFullscreen();
+  if (event.code === "Space") handelPlyabtn();
+};
+
 playBtn.addEventListener("click", handelPlyabtn);
 muteBtn.addEventListener("click", handelMutebtn);
 volume.addEventListener("input", handleVolume);
@@ -110,3 +115,4 @@ time.addEventListener("input", changeTime);
 fullScreenBtn.addEventListener("click", handleFullscreen);
 fullScreen.addEventListener("mousemove", handleMouseMove);
 fullScreen.addEventListener("mouseleave", handleMouseLeave);
+document.addEventListener("keydown", handleKeydown);
