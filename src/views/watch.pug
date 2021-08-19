@@ -1,7 +1,7 @@
 extends base.pug
 
 block content   
-    div#fullScreen.videoContainer
+    div#fullScreen(data-id=video._id).videoContainer
         video(src="/" + video.videoUrl).video
         div.videoControlBox#videoShowing
             div.videoControlBoxFir

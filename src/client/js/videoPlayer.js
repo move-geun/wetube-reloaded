@@ -106,12 +106,20 @@ const handleKeydown = (event) => {
   if (event.code === "Space") handelPlyabtn();
 };
 
+const registerView = () => {
+  const { id } = fullScreen.dataset;
+  fetch(`/api/videos/${id}/view`, {
+    method: "POST",
+  });
+};
+
 playBtn.addEventListener("click", handelPlyabtn);
 muteBtn.addEventListener("click", handelMutebtn);
 volume.addEventListener("input", handleVolume);
 video.addEventListener("loadedmetadata", loadTotalTime);
 video.addEventListener("timeupdate", timeUpdate);
 time.addEventListener("input", changeTime);
+video.addEventListener("ended", registerView);
 fullScreenBtn.addEventListener("click", handleFullscreen);
 fullScreen.addEventListener("mousemove", handleMouseMove);
 fullScreen.addEventListener("mouseleave", handleMouseLeave);
