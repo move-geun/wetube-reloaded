@@ -2,7 +2,9 @@ extends base.pug
 
 
 block content 
-
+    div
+        video#preview
+        button#startBtn Start Recording
         if errorMessage
             span errorMessage
         
@@ -13,3 +15,5 @@ block content
             input(placeholder="Description", required, type="text", name="description", minlenth=1)
             input(placeholder="Hashtags, Separate by comma", required, type="text", name="hashtags")
             input(value="Upload" type="submit")
+block scripts
+    script(src="/static/js/recoder.js")
