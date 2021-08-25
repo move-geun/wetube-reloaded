@@ -1,0 +1,17 @@
+.uploadBox {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  .previewBox {
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    video {
+      max-width: 100%;
+      margin-bottom: 20px;
+    }
+  }
+}
