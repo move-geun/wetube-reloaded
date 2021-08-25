@@ -3,19 +3,28 @@
   flex-direction: column;
   text-align: center;
   justify-content: center;
+  align-items: center;
   position: relative;
+  video {
+    width: 100%;
+  }
 }
 
 .videoControlBox {
-  width: 100%;
+  box-sizing: border-box;
+  width: 95%;
   display: flex;
   flex-direction: column;
   text-align: center;
   justify-content: center;
   position: absolute;
-  bottom: 0;
+  align-items: center;
+  bottom: 10px;
   opacity: 0;
   transition: opacity 0.5s ease-in-out;
+  .videoControlBoxFir {
+    width: 100%;
+  }
 }
 .showing {
   opacity: 1;

@@ -113,11 +113,16 @@ const registerView = () => {
   });
 };
 
+if (video.readyState == 4) {
+  loadTotalTime();
+}
+
 playBtn.addEventListener("click", handelPlyabtn);
 muteBtn.addEventListener("click", handelMutebtn);
 volume.addEventListener("input", handleVolume);
 video.addEventListener("loadedmetadata", loadTotalTime);
 video.addEventListener("timeupdate", timeUpdate);
+video.addEventListener("click", handelPlyabtn);
 time.addEventListener("input", changeTime);
 video.addEventListener("ended", registerView);
 fullScreenBtn.addEventListener("click", handleFullscreen);
