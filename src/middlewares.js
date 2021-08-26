@@ -11,6 +11,7 @@ export const loginOnly = (req, res, next) => {
   if (req.session.loggedIn) {
     next();
   } else {
+    req.flash("error", "로그인 이후 이용 가능합니다.");
     return res.redirect("/login");
   }
 };
@@ -19,6 +20,7 @@ export const guestOnly = (req, res, next) => {
   if (!req.session.loggedIn) {
     next();
   } else {
+    req.flash("error", "로그아웃 이후 이용 가능합니다.");
     return res.redirect("/");
   }
 };

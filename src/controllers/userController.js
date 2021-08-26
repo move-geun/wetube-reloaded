@@ -6,13 +6,13 @@ export const getJoin = (req, res) => res.render("join", { pageTitle: "Join" });
 export const postJoin = async (req, res) => {
   const { name, username, email, password, password2, location } = req.body;
   if (password !== password2) {
-    const errormessage = "비밀번호가 맞지 않습니다.";
-    return res.status(400).render("join", { pageTitle: "Join", errormessage });
+    req.flash("error", "비밀번호가 맞지 않습니다.");
+    return res.status(400).render("join", { pageTitle: "Join" });
   }
   const exists = await User.exists({ $or: [{ name }, { email }] });
   if (exists) {
-    const errormessage = "이미 존재하는 Name or Email 입니다.";
-    return res.status(400).render("join", { pageTitle: "Join", errormessage });
+    req.flash("error", "이미 존재하는 Name or Email 입니다.");
+    return res.status(400).render("join", { pageTitle: "Join" });
   }
   try {
     await User.create({
@@ -26,7 +26,6 @@ export const postJoin = async (req, res) => {
   } catch (error) {
     return res.status(400).render("join", {
       pageTitle: "Join",
-      errorMessage: error._message,
     });
   }
 };
@@ -37,16 +36,16 @@ export const postLogin = async (req, res) => {
   const { username, password } = req.body;
   const user = await User.findOne({ username, socialOnly: false });
   if (!user) {
+    req.flash("error", "해당 Username으로 가입한 계정이 없습니다.");
     return res.status(400).render("login", {
       pageTitle: "Log In",
-      errormessage: "해당 Username으로 가입한 계정이 없습니다.",
     });
   }
   const ok = await bcrypt.compare(password, user.password);
   if (!ok) {
+    req.flash("error", "틀린 Password입니다.");
     return res.status(400).render("login", {
       pageTitle: "Log In",
-      errormessage: "틀린 Password입니다.",
     });
   }
   req.session.loggedIn = true;
@@ -118,7 +117,6 @@ export const finishGithubLogin = async (req, res) => {
         location: userData.location,
       });
     }
-    console.log(user.avatarUrl);
     req.session.loggedIn = true;
     req.session.user = user;
     return res.redirect("/");
@@ -194,29 +192,15 @@ export const postEdit = async (req, res) => {
    여기까지는 /////////////////////////////////////////////////
    */
   if (findName !== null && findName._id != _id) {
-    console.log(
-      "1번에서 말합니다 findName = ",
-      findName._id,
-      "findEmail = ",
-      findEmail,
-      "name = ",
-      name
-    );
+    req.flash("error", `이미 존재하는 ${name}입니다.`);
     return res.render("editProfile", {
       pageTitle: "Edit Profile",
-      errormessage: `이미 존재하는 ${name}입니다. `,
     });
   }
   if (findEmail !== null && findEmail._id != _id) {
-    console.log(
-      "2번에서 말합니다 findName = ",
-      findName,
-      "findEmail = ",
-      findEmail
-    );
+    req.flash("error", `이미 존재하는 ${email}입니다.`);
     return res.render("editProfile", {
       pageTitle: "Edit Profile",
-      errormessage: `이미 존재하는 ${email}입니다.`,
     });
   }
   const updateUser = await User.findByIdAndUpdate(
@@ -231,7 +215,6 @@ export const postEdit = async (req, res) => {
     { new: true }
   );
   req.session.user = updateUser;
-  console.log("findName = ", findName, "findEmail = ", findEmail);
   return res.redirect("/users/editProfile");
 };
 
@@ -244,6 +227,7 @@ export const postEdit = async (req, res) => {
 
 export const getChangePassword = (req, res) => {
   if (req.session.user.socialOnly === true) {
+    req.flash("error", "비밀번호를 변경할 수 없습니다.");
     return res.redirect("/");
   }
   return res.render("changePassword", { pageTitle: "Change Password" });
@@ -259,15 +243,15 @@ export const postChangePassword = async (req, res) => {
   const user = await User.findById(_id);
   const ok = await bcrypt.compare(oldPassword, user.password);
   if (!ok) {
+    req.flash("error", "기존 비밀번호가 맞지 않습니다.");
     return res.status(400).render("changePassword", {
       pageTitle: "Change Password",
-      errormessage: "기존 비밀번호가 맞지 않습니다.",
     });
   }
   if (newPassword !== newPassword2) {
+    req.flash("error", "새로운 비밀번호가 맞지 않습니다. 다시 확인해주세요.");
     return res.status(400).render("changePassword", {
       pageTitle: "Change Password",
-      errormessage: "새로운 비밀번호가 맞지 않습니다. 다시 확인해주세요.",
     });
   }
   user.password = newPassword;
