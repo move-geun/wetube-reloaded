@@ -39,9 +39,14 @@ block content
     if loggedIn 
         div.commentBox
             form.commentForm#commentForm
-                textarea(cols="30", rows="10", placeholder="Write a comment...") 
+                textarea(cols="30", rows="10", placeholder="Write a comment...")
                 button Add Comment
-
+    div.commentLine
+        ul 
+            each comment in video.comment.reverse()
+                li.video__comment 
+                    i.fas.fa-user 
+                    span  #{comment.text}
 
 block scripts
     script(src="/static/js/videoPlayer.js")
