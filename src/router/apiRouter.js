@@ -1,9 +1,14 @@
 import express from "express";
-import { apiviews, createComment } from "../controllers/videoController";
+import {
+  apiviews,
+  createComment,
+  deleteComment,
+} from "../controllers/videoController";
 
 const apiRouter = express.Router();
 
 apiRouter.post("/videos/:id([0-9a-f]{24})/view", apiviews);
 apiRouter.post("/videos/:id([0-9a-f]{24})/comment", createComment);
+apiRouter.delete("/comments/:id([0-9a-f]{24})/delete", deleteComment);
 
 export default apiRouter;

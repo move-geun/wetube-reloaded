@@ -2,6 +2,7 @@ const form = document.getElementById("commentForm");
 const textarea = form.querySelector("textarea");
 const btn = form.querySelector("button");
 const dataset = document.getElementById("fullScreen");
+const deleteBtn = document.querySelectorAll(".deleteBtn");
 
 const addComment = (text, id) => {
   const videoComments = document.querySelector(".commentLine ul");
@@ -42,4 +43,30 @@ const handleSubmit = async (event) => {
   }
 };
 
+const mentDelete = (event) => {
+  const videoComments = document.querySelector(".commentLine ul");
+  console.log(videoComments);
+  const commentList = event.target.parentNode;
+  console.log(commentList);
+  videoComments.removeChild(commentList);
+};
+
+const deletecomment = async (event) => {
+  const comment = event.target.parentElement;
+  const commentId = comment.dataset.id;
+  const response = await fetch(`/api/comments/${commentId}/delete`, {
+    method: "DELETE",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ commentId }),
+  });
+  if (response.status === 201) {
+    comment.remove();
+  }
+};
+
 form.addEventListener("submit", handleSubmit);
+deleteBtn.forEach((item) => {
+  item.addEventListener("click", deletecomment);
+});

@@ -12,6 +12,8 @@ const fullScreenBtn = document.getElementById("fullScreenBtn");
 const fullScreenBtnIcon = fullScreenBtn.querySelector("i");
 const videoControls = document.getElementById("videoControls");
 const videoShowing = document.getElementById("videoShowing");
+const form = document.getElementById("commentForm");
+const textarea = form.querySelector("textarea");
 
 let controlsTimeout = null;
 let moveCapture = null;
@@ -102,8 +104,19 @@ const handleMouseLeave = () => {
 };
 
 const handleKeydown = (event) => {
-  if (event.code === "Enter") handleFullscreen();
+  if (event.code === "KeyF") handleFullscreen();
+  if (event.code === "Space") {
+    event.preventDefault();
+  }
   if (event.code === "Space") handelPlyabtn();
+};
+
+const handleFocusIn = () => {
+  document.removeEventListener("keydown", handleKeydown);
+};
+
+const handleFocusOut = () => {
+  document.addEventListener("keydown", handleKeydown);
 };
 
 const registerView = () => {
@@ -129,3 +142,5 @@ fullScreenBtn.addEventListener("click", handleFullscreen);
 fullScreen.addEventListener("mousemove", handleMouseMove);
 fullScreen.addEventListener("mouseleave", handleMouseLeave);
 document.addEventListener("keydown", handleKeydown);
+textarea.addEventListener("focusin", handleFocusIn);
+textarea.addEventListener("focusout", handleFocusOut);
