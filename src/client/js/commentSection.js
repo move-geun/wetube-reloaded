@@ -13,12 +13,17 @@ const addComment = (text, id) => {
   icon.className = "fas fa-user";
   const span = document.createElement("span");
   const span2 = document.createElement("span");
+  span2.className = "deleteBtn";
   span.innerText = ` ${text}`;
   span2.innerText = "❌";
   newCommnets.appendChild(icon);
   newCommnets.appendChild(span);
   newCommnets.appendChild(span2);
   videoComments.prepend(newCommnets);
+
+  if (span2) {
+    span2.addEventListener("click", deletecomment);
+  }
 };
 
 const handleSubmit = async (event) => {
