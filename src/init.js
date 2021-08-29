@@ -6,8 +6,10 @@ import "./models/User";
 import "./models/Comment";
 import app from "./server";
 
+const PORT = procees.env.PORT || 4000;
+
 const handleListening = () => {
   console.log("✅ Hellow my site");
 };
 
-app.listen(4000, handleListening);
+app.listen(PORT, handleListening);

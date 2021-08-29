@@ -36,12 +36,12 @@ block content
         if String(video.owner._id) === String(loggedInUser._id)
             a.video_setting(href=`${video.id}/edit`) Edit Video &rarr;
             a.video_setting(href=`${video.id}/delete`) Delete Video &rarr;
-    if loggedIn 
-        div.mentContainer
-            div.commentBox
-                form.commentForm#commentForm
-                    textarea.mentForm#commentForm(cols="150", rows="1", placeholder="Write a comment...")
-                    button Add Comment
+        if loggedIn 
+            div.mentContainer
+                div.commentBox
+                    form.commentForm#commentForm
+                        textarea.mentForm#commentForm(cols="150", rows="1", placeholder="Write a comment...")
+                        button Add Comment
     div.commentLine
         ul 
             each comment in video.comment.reverse()
