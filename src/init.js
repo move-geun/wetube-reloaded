@@ -9,7 +9,7 @@ import app from "./server";
 const PORT = 4000;
 
 const handleListening = () => {
-  console.log("✅ Hellow my site");
+  console.log(`✅ Hellow my site on http://localhost:${PORT}`);
 };
 
 app.listen(PORT, handleListening);
